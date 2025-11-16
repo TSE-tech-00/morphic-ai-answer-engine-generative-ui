@@ -116,10 +116,10 @@ export function ChatPanel({
         <div className="mb-10 flex flex-col items-center gap-4">
           <IconLogo className="size-12 text-muted-foreground" />
           <p className="text-center text-3xl font-semibold">
-          I'm ready when you are.
+          I&apos;m ready when you are.
           </p>
           <p className="text-center text-sm font-semibold">
-            I'm March, your AI travel copilot - from hotels to taxis, dining to experiences, I'll handle it all.
+            I&apos;m March, your AI travel copilot - from hotels to taxis, dining to experiences, I&apos;ll handle it all.
           </p>
         </div>
       )}
