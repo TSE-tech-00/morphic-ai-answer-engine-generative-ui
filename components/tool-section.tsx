@@ -5,7 +5,6 @@ import { ToolInvocation } from 'ai'
 import { QuestionConfirmation } from './question-confirmation'
 import RetrieveSection from './retrieve-section'
 import { SearchSection } from './search-section'
-import { VideoSearchSection } from './video-search-section'
 
 interface ToolSectionProps {
   tool: ToolInvocation
@@ -61,15 +60,6 @@ export function ToolSection({
     case 'search':
       return (
         <SearchSection
-          tool={tool}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          chatId={chatId || ''}
-        />
-      )
-    case 'videoSearch':
-      return (
-        <VideoSearchSection
           tool={tool}
           isOpen={isOpen}
           onOpenChange={onOpenChange}

@@ -3,7 +3,6 @@
 import Link from 'next/link'
 
 import {
-  Link2,
   LogIn,
   Palette,
   Settings2 // Or EllipsisVertical, etc.
@@ -51,10 +50,6 @@ export default function GuestMenu() {
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSub>
-          <DropdownMenuSubTrigger>
-            <Link2 className="mr-2 h-4 w-4" />
-            <span>Links</span>
-          </DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <ExternalLinkItems />
           </DropdownMenuSubContent>

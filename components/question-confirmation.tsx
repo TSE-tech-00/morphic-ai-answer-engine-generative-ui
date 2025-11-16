@@ -37,11 +37,27 @@ export function QuestionConfirmation({
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>([])
   const [inputText, setInputText] = useState('')
+  const [checkin, setCheckin] = useState('')
+  const [checkout, setCheckout] = useState('')
   const [completed, setCompleted] = useState(isCompleted)
   const [skipped, setSkipped] = useState(false)
 
+  // Detect presence of an "other dates" option
+  const otherDatesOptionLabel =
+    options?.find(
+      (o: QuestionOption) =>
+        /other\s*date/i.test(o.label) || /date/i.test(o.value)
+    )?.label || null
+  const hasOtherDatesOption = Boolean(otherDatesOptionLabel)
+  const isOtherDatesSelected =
+    hasOtherDatesOption && selectedOptions.includes(otherDatesOptionLabel as string)
+
   const isButtonDisabled =
-    selectedOptions.length === 0 && (!allowsInput || inputText.trim() === '')
+    // No selection and no input
+    selectedOptions.length === 0 &&
+    (!allowsInput || inputText.trim() === '') &&
+    // If "other dates" is selected, require both dates
+    (!isOtherDatesSelected || !(checkin && checkout))
 
   const handleOptionChange = (label: string) => {
     setSelectedOptions(prev => {
@@ -69,7 +85,13 @@ export function QuestionConfirmation({
     const response = {
       selectedOptions,
       inputText: inputText.trim(),
-      question
+      question,
+      ...(isOtherDatesSelected
+        ? {
+            checkin,
+            checkout
+          }
+        : {})
     }
 
     onConfirm(toolInvocation.toolCallId, true, response)
@@ -184,6 +206,33 @@ export function QuestionConfirmation({
                 value={inputText}
                 onChange={handleInputChange}
               />
+            </div>
+          )}
+
+          {isOtherDatesSelected && (
+            <div className="mb-6 flex flex-col md:flex-row gap-3 text-sm">
+              <div className="flex-1">
+                <label className="text-muted-foreground block mb-1" htmlFor="checkin">
+                  Check-in
+                </label>
+                <Input
+                  type="date"
+                  id="checkin"
+                  value={checkin}
+                  onChange={e => setCheckin(e.target.value)}
+                />
+              </div>
+              <div className="flex-1">
+                <label className="text-muted-foreground block mb-1" htmlFor="checkout">
+                  Check-out
+                </label>
+                <Input
+                  type="date"
+                  id="checkout"
+                  value={checkout}
+                  onChange={e => setCheckout(e.target.value)}
+                />
+              </div>
             </div>
           )}
 
