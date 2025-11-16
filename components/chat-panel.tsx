@@ -1,17 +1,18 @@
 'use client'
 
-import { Message } from 'ai'
-import { ArrowUp, ChevronDown, MessageCirclePlus, Square } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Textarea from 'react-textarea-autosize'
+import { useRouter } from 'next/navigation'
+
+import { Message } from 'ai'
+import { ArrowUp, ChevronDown, MessageCirclePlus, Square } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
 import { useArtifact } from './artifact/artifact-context'
-import { EmptyScreen } from './empty-screen'
 import { Button } from './ui/button'
 import { IconLogo } from './ui/icons'
+import { EmptyScreen } from './empty-screen'
 
 interface ChatPanelProps {
   input: string

@@ -1,6 +1,9 @@
-import { Plus } from 'lucide-react'
-import Link from 'next/link'
 import { Suspense } from 'react'
+import Link from 'next/link'
+
+import { Plus } from 'lucide-react'
+
+import { cn } from '@/lib/utils'
 
 import {
   Sidebar,
@@ -12,8 +15,6 @@ import {
   SidebarRail,
   SidebarTrigger
 } from '@/components/ui/sidebar'
-
-import { cn } from '@/lib/utils'
 
 import { ChatHistorySection } from './sidebar/chat-history-section'
 import { ChatHistorySkeleton } from './sidebar/chat-history-skeleton'
