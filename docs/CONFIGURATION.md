@@ -1,6 +1,6 @@
 # Configuration Guide
 
-This guide covers the optional features and their configuration in Morphic.
+This guide covers the optional features and their configuration in March.
 
 ## Table of Contents
 
@@ -123,7 +123,7 @@ docker-compose logs searxng
 
 Models are configured in `public/config/models.json`. Each model requires its corresponding API key to be set in the environment variables.
 
-> **Note:** Ollama models are discovered dynamically at runtime when an Ollama server is available. Only models that expose the `tools` capability will appear in Morphic, so you no longer need to keep placeholder Ollama entries in `models.json`.
+> **Note:** Ollama models are discovered dynamically at runtime when an Ollama server is available. Only models that expose the `tools` capability will appear in March, so you no longer need to keep placeholder Ollama entries in `models.json`.
 
 ### Model Configuration
 
@@ -171,7 +171,7 @@ GROQ_API_KEY=[YOUR_API_KEY]
 OLLAMA_BASE_URL=http://localhost:11434
 ```
 
-When this variable is set, Morphic will automatically discover Ollama models that advertise the `tools` capability. Models without this capability are ignored, and no static configuration in `models.json` is required unless you need to override specific settings.
+When this variable is set, March will automatically discover Ollama models that advertise the `tools` capability. Models without this capability are ignored, and no static configuration in `models.json` is required unless you need to override specific settings.
 
 ### Azure OpenAI
 

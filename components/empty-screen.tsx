@@ -4,20 +4,16 @@ import { Button } from '@/components/ui/button'
 
 const exampleMessages = [
   {
-    heading: 'What is DeepSeek R1?',
-    message: 'What is DeepSeek R1?'
+    heading: 'Find a hotel in Tokyo for next weekend',
+    message: 'Can you help me find and book a hotel in Tokyo for next weekend?'
   },
   {
-    heading: 'Why is Nvidia growing rapidly?',
-    message: 'Why is Nvidia growing rapidly?'
+    heading: 'Compare hotel prices in New York City',
+    message: 'Show me the best hotel options in New York City for a business trip, and compare their prices and amenities.'
   },
   {
-    heading: 'Tesla vs Rivian',
-    message: 'Tesla vs Rivian'
-  },
-  {
-    heading: 'Summary: https://arxiv.org/pdf/2501.05707',
-    message: 'Summary: https://arxiv.org/pdf/2501.05707'
+    heading: 'Locate family-friendly hotels near Disneyland Paris',
+    message: 'Can you recommend some family-friendly hotels near Disneyland Paris and help with booking?'
   }
 ]
 export function EmptyScreen({

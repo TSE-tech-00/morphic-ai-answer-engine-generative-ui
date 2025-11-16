@@ -9,8 +9,8 @@ import { isProviderEnabled } from '@/lib/utils/registry'
 export const maxDuration = 30
 
 const DEFAULT_MODEL: Model = {
-  id: 'gpt-4o-mini',
-  name: 'GPT-4o mini',
+  id: 'gpt-4.1',
+  name: 'GPT-4.1',
   provider: 'OpenAI',
   providerId: 'openai',
   enabled: true,
@@ -32,18 +32,8 @@ export async function POST(req: Request) {
     }
 
     const cookieStore = await cookies()
-    const modelJson = cookieStore.get('selectedModel')?.value
     const searchMode = cookieStore.get('search-mode')?.value === 'true'
-
-    let selectedModel = DEFAULT_MODEL
-
-    if (modelJson) {
-      try {
-        selectedModel = JSON.parse(modelJson) as Model
-      } catch (e) {
-        console.error('Failed to parse selected model:', e)
-      }
-    }
+    const selectedModel = DEFAULT_MODEL
 
     if (
       !isProviderEnabled(selectedModel.providerId) ||

@@ -1,21 +1,18 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import Textarea from 'react-textarea-autosize'
-import { useRouter } from 'next/navigation'
 
 import { Message } from 'ai'
 import { ArrowUp, ChevronDown, MessageCirclePlus, Square } from 'lucide-react'
 
-import { Model } from '@/lib/types/models'
 import { cn } from '@/lib/utils'
 
 import { useArtifact } from './artifact/artifact-context'
+import { EmptyScreen } from './empty-screen'
 import { Button } from './ui/button'
 import { IconLogo } from './ui/icons'
-import { EmptyScreen } from './empty-screen'
-import { ModelSelector } from './model-selector'
-import { SearchModeToggle } from './search-mode-toggle'
 
 interface ChatPanelProps {
   input: string
@@ -27,7 +24,6 @@ interface ChatPanelProps {
   query?: string
   stop: () => void
   append: (message: any) => void
-  models?: Model[]
   /** Whether to show the scroll to bottom button */
   showScrollToBottomButton: boolean
   /** Reference to the scroll container */
@@ -44,7 +40,6 @@ export function ChatPanel({
   query,
   stop,
   append,
-  models,
   showScrollToBottomButton,
   scrollContainerRef
 }: ChatPanelProps) {
@@ -121,7 +116,10 @@ export function ChatPanel({
         <div className="mb-10 flex flex-col items-center gap-4">
           <IconLogo className="size-12 text-muted-foreground" />
           <p className="text-center text-3xl font-semibold">
-            How can I help you today?
+          I'm ready when you are.
+          </p>
+          <p className="text-center text-sm font-semibold">
+            I'm March, your AI travel copilot - from hotels to taxis, dining to experiences, I'll handle it all.
           </p>
         </div>
       )}
@@ -183,10 +181,7 @@ export function ChatPanel({
 
           {/* Bottom menu area */}
           <div className="flex items-center justify-between p-3">
-            <div className="flex items-center gap-2">
-              <ModelSelector models={models || []} />
-              <SearchModeToggle />
-            </div>
+            <div className="flex items-center gap-2" />
             <div className="flex items-center gap-2">
               {messages.length > 0 && (
                 <Button
@@ -203,8 +198,16 @@ export function ChatPanel({
               <Button
                 type={isLoading ? 'button' : 'submit'}
                 size={'icon'}
-                variant={'outline'}
-                className={cn(isLoading && 'animate-pulse', 'rounded-full')}
+                variant={input.trim().length > 0 && !isLoading && !isToolInvocationInProgress() ? 'default' : 'outline'}
+                className={cn(
+                  isLoading && 'animate-pulse',
+                  'rounded-full',
+                  input.trim().length > 0 &&
+                    !isLoading &&
+                    !isToolInvocationInProgress() &&
+                    // black circular button with white arrow when there is input
+                    'bg-black text-white hover:bg-black hover:text-white border border-black'
+                )}
                 disabled={
                   (input.length === 0 && !isLoading) ||
                   isToolInvocationInProgress()

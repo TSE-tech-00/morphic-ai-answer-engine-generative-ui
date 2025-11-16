@@ -14,11 +14,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `bun format` - Format code with Prettier
 - `bun format:check` - Check code formatting without modifying files
 
-### Docker
-
-- `docker compose up -d` - Run the application with Docker
-- `docker pull ghcr.io/miurla/morphic:latest` - Pull prebuilt Docker image
-
 ## Architecture Overview
 
 ### Tech Stack

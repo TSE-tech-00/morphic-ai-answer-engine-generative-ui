@@ -1,8 +1,9 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "morphic",
+      "name": "march",
       "dependencies": {
         "@ai-sdk/anthropic": "^1.2.10",
         "@ai-sdk/azure": "^1.1.5",
