@@ -1,7 +1,8 @@
 import { CoreMessage, smoothStream, streamText } from 'ai'
 
+import { hotelRatesSearchTool } from '../tools/hotel-rates'
+import { hotelSearchTool } from '../tools/hotel-search'
 import { createQuestionTool } from '../tools/question'
-import { createSearchTool } from '../tools/search'
 import { getModel } from '../utils/registry'
 
 const SYSTEM_PROMPT = `
@@ -12,12 +13,13 @@ You are March, an AI travel assistant that specializes in finding hotels for use
 When a user asks for help finding a hotel, follow this process:
 1. First, identify if you have all necessary details: the destination (place), check-in date, check-out date, and the number of adults.
 2. **If any of these details are missing, use the ask_question tool to request the specific information from the user. Create clear and concise questions to gather missing details, and provide predefined options where applicable (such as date pickers for dates, or number selection for adults).**
-3. Once all required information is gathered, search for relevant hotel listings using the search tool, including price, amenities, and availability for the specified dates.
-4. Carefully analyze all search results to provide accurate and up-to-date hotel recommendations.
-5. Always cite sources using the [number](url) format, matching the order of the search results. If multiple sources are relevant, include all, separated by commas. Only use information that has a URL available for citation.
-6. If no relevant results are found, or the results are not helpful, fall back on your general travel knowledge.
-7. Provide comprehensive, detailed, and actionable recommendations, ensuring the user has all necessary hotel information.
-8. Use markdown to format your responses. Use headings (##) to organize content, such as "Top Hotel Options" or "Booking Information".
+3. Once all required information is gathered, resolve destination using the hotel_search tool (to obtain place candidates / placeId).
+4. **After resolving the destination, use the hotel_rates_search tool to find actual hotel rates and availability. This tool provides real-time pricing, room options, and booking details.**
+5. Carefully analyze all search results to provide accurate and up-to-date hotel recommendations with pricing.
+6. Always cite sources using the [number](url) format, matching the order of the search results. If multiple sources are relevant, include all, separated by commas. Only use information that has a URL available for citation.
+7. If no relevant results are found, or the results are not helpful, fall back on your general travel knowledge.
+8. Provide comprehensive, detailed, and actionable recommendations with pricing information, ensuring the user has all necessary hotel information.
+9. Use markdown to format your responses. Use headings (##) to organize content, such as "Top Hotel Options" or "Booking Information".
 
 When using the ask_question tool:
 - Ask only for missing or ambiguous details
@@ -42,8 +44,7 @@ export function researcher({
   try {
     const currentDate = new Date().toLocaleString()
 
-    // Create model-specific tools
-    const searchTool = createSearchTool(model)
+    // Create tools
     const askQuestionTool = createQuestionTool(model)
 
     return {
@@ -51,10 +52,11 @@ export function researcher({
       system: `${SYSTEM_PROMPT}\nCurrent date and time: ${currentDate}`,
       messages,
       tools: {
-        search: searchTool,
+        hotel_search: hotelSearchTool,
+        hotel_rates_search: hotelRatesSearchTool,
         ask_question: askQuestionTool
       },
-      experimental_activeTools: ['search', 'ask_question'],
+      experimental_activeTools: ['hotel_search', 'hotel_rates_search', 'ask_question'],
       maxSteps: 5,
       experimental_transform: smoothStream()
     }

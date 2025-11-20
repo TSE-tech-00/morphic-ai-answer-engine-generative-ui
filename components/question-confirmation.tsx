@@ -51,13 +51,17 @@ export function QuestionConfirmation({
           /date|check[\s-]?in|check[\s-]?out/i.test(o.label) ||
           /date|check[\s-]?in|check[\s-]?out/i.test(o.value)
       ))
+  // Today's date in YYYY-MM-DD (local)
+  const todayISO = new Date().toISOString().slice(0, 10)
 
   const isButtonDisabled =
     // No selection and no input
     selectedOptions.length === 0 &&
     (!allowsInput || inputText.trim() === '') &&
     // If asking for dates, require both dates
-    (!isDateQuestion || !(checkin && checkout))
+    (!isDateQuestion || !(checkin && checkout)) ||
+    // Disallow check-in before today
+    (isDateQuestion && !!checkin && checkin < todayISO)
 
   const handleOptionChange = (label: string) => {
     setSelectedOptions(prev => {
@@ -218,6 +222,7 @@ export function QuestionConfirmation({
                 <Input
                   type="date"
                   id="checkin"
+                  min={todayISO}
                   value={checkin}
                   onChange={e => setCheckin(e.target.value)}
                 />
@@ -229,6 +234,7 @@ export function QuestionConfirmation({
                 <Input
                   type="date"
                   id="checkout"
+                  min={checkin || todayISO}
                   value={checkout}
                   onChange={e => setCheckout(e.target.value)}
                 />

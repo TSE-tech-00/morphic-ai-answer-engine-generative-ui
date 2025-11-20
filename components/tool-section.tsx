@@ -4,7 +4,6 @@ import { ToolInvocation } from 'ai'
 
 import { QuestionConfirmation } from './question-confirmation'
 import RetrieveSection from './retrieve-section'
-import { SearchSection } from './search-section'
 
 interface ToolSectionProps {
   tool: ToolInvocation
@@ -57,15 +56,6 @@ export function ToolSection({
   }
 
   switch (tool.toolName) {
-    case 'search':
-      return (
-        <SearchSection
-          tool={tool}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          chatId={chatId || ''}
-        />
-      )
     case 'retrieve':
       return (
         <RetrieveSection
@@ -74,6 +64,12 @@ export function ToolSection({
           onOpenChange={onOpenChange}
         />
       )
+    case 'hotel_search':
+      // We do not render a dedicated UI block for hotel_search results here.
+      return null
+    case 'hotel_rates_search':
+      // Hotel rates are displayed in the artifact content
+      return null
     default:
       return null
   }
