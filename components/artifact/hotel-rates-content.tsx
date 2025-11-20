@@ -1,11 +1,13 @@
 'use client'
 
-import type { ToolInvocation } from 'ai'
 import Image from 'next/image'
 
-import { Section, ToolArgsSection } from '@/components/section'
+import type { ToolInvocation } from 'ai'
+
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+
+import { Section, ToolArgsSection } from '@/components/section'
 
 interface HotelRate {
   rateId: string
