@@ -42,22 +42,22 @@ export function QuestionConfirmation({
   const [completed, setCompleted] = useState(isCompleted)
   const [skipped, setSkipped] = useState(false)
 
-  // Detect presence of an "other dates" option
-  const otherDatesOptionLabel =
-    options?.find(
-      (o: QuestionOption) =>
-        /other\s*date/i.test(o.label) || /date/i.test(o.value)
-    )?.label || null
-  const hasOtherDatesOption = Boolean(otherDatesOptionLabel)
-  const isOtherDatesSelected =
-    hasOtherDatesOption && selectedOptions.includes(otherDatesOptionLabel as string)
+  // If question is about dates, always present a calendar (date inputs) for check-in/out
+  const isDateQuestion =
+    /date|check[\s-]?in|check[\s-]?out/i.test(question || '') ||
+    (Array.isArray(options) &&
+      options.some(
+        (o: QuestionOption) =>
+          /date|check[\s-]?in|check[\s-]?out/i.test(o.label) ||
+          /date|check[\s-]?in|check[\s-]?out/i.test(o.value)
+      ))
 
   const isButtonDisabled =
     // No selection and no input
     selectedOptions.length === 0 &&
     (!allowsInput || inputText.trim() === '') &&
-    // If "other dates" is selected, require both dates
-    (!isOtherDatesSelected || !(checkin && checkout))
+    // If asking for dates, require both dates
+    (!isDateQuestion || !(checkin && checkout))
 
   const handleOptionChange = (label: string) => {
     setSelectedOptions(prev => {
@@ -86,7 +86,7 @@ export function QuestionConfirmation({
       selectedOptions,
       inputText: inputText.trim(),
       question,
-      ...(isOtherDatesSelected
+      ...(isDateQuestion
         ? {
             checkin,
             checkout
@@ -209,7 +209,7 @@ export function QuestionConfirmation({
             </div>
           )}
 
-          {isOtherDatesSelected && (
+          {isDateQuestion && (
             <div className="mb-6 flex flex-col md:flex-row gap-3 text-sm">
               <div className="flex-1">
                 <label className="text-muted-foreground block mb-1" htmlFor="checkin">
